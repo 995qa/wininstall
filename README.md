@@ -1,0 +1,2 @@
+# wininstall
+Windows installer script
