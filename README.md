@@ -13,4 +13,5 @@ sudo ./wiminstall.bash -w [winpart] -e [efipart] -f [wimfile]
 -i specifies the index and is optional. when not specified, the script will show available indexes on the WIM to choose from.
 ```
 
-(BCD-SYS)[https://github.com/jpz4085/BCD-SYS] can be installed manually here.
+## Credits
+[BCD-SYS](https://github.com/jpz4085/BCD-SYS)
