@@ -18,6 +18,7 @@ main() {
   echo "Downloading BCD-SYS... (it's a surprise tool that will help us later)"
   wget https://github.com/jpz4085/BCD-SYS/releases/download/v2.3/bcd-sys-2.3-x86_64.AppImage
   chmod +x bcd-sys-2.3-x86_64.AppImage
+  applywim
 }
 
 applywim() {
@@ -40,14 +41,14 @@ efiapply() {
     echo "wait whar"
     exit 5
   fi
-  echo "This does not copy the Windows EFI into BOOTx64.efi."
-  echo "You can add an EFI option for /EFI/Microsoft/Boot/bootmgfw.efi in your UEFI settings."
-  if (( $winmnt == /tmp/winmnt )); then
+#  echo "This does not copy the Windows EFI into BOOTx64.efi."
+#  echo "You can add an EFI option for /EFI/Microsoft/Boot/bootmgfw.efi in your UEFI settings."
+  if [[ $winmnt == /tmp/winmnt ]]; then
     echo "Unmounting Windows partition"
     umount /tmp/winmnt
     rmdir /tmp/winmnt
   fi
-  if (( $efimnt == /tmp/efimnt )); then
+  if [[ $efimnt == /tmp/efimnt ]]; then
     echo "Unmounting EFI partition"
     umount /tmp/efimnt
     rmdir /tmp/efimnt
