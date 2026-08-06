@@ -65,7 +65,7 @@ help() {
   echo "-i [index]: Specifies the index (optional)"
 }
 
-while getopts "w:e:f:i" opt; do
+while getopts "w:e:f:i:" opt; do
   case $opt in
     w) winpart="$OPTARG"  ;;
     e) efipart="$OPTARG"  ;;
