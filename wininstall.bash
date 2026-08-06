@@ -7,10 +7,10 @@ wimindex=""
 main() {
   echo "This will apply Windows to a specified partition, then will install the Boot files into the EFI partition."
   if [ -z "$wimindex" ]; then
-    wiminfo $wimfile | grep -E '^Index:|^Name:'
+    wiminfo "$wimfile" | grep -E '^Index:|^Name:'
     read -p "Select the index: " wimindex
   fi
-  wiminfo $wimfile $wimindex > /dev/null 2>&1
+  wiminfo "$wimfile" $wimindex > /dev/null 2>&1
   if (( $? == 18 )); then
     echo "Specified index is invalid!"
     exit 2
@@ -22,9 +22,10 @@ main() {
 }
 
 applywim() {
-  wimapply $wimfile $wimindex $winmnt
+  wimapply "$wimfile" $wimindex "$winmnt"
   if (( $? != 0 )); then
     echo "wimapply failed! read the logs above to see what went wrong"
+    clean
     exit 4
   fi
   efiapply
@@ -36,13 +37,15 @@ efiapply() {
 #  ^ It looks like BCD-SYS actually does this step while making the BCD
 
 # also it doesn't like running as root for some reason
-  sudo -u "$SUDO_USER" ./bcd-sys-2.3-x86_64.AppImage -v $winmnt
+  sudo -u "$SUDO_USER" ./bcd-sys-2.3-x86_64.AppImage -v "$winmnt"
   if (( $? != 0 )); then
     echo "wait whar"
+    clean
     exit 5
   fi
-#  echo "This does not copy the Windows EFI into BOOTx64.efi."
-#  echo "You can add an EFI option for /EFI/Microsoft/Boot/bootmgfw.efi in your UEFI settings."
+}
+
+clean() {
   if [[ $winmnt == /tmp/winmnt ]]; then
     echo "Unmounting Windows partition"
     umount /tmp/winmnt
@@ -53,7 +56,7 @@ efiapply() {
     umount /tmp/efimnt
     rmdir /tmp/efimnt
   fi
-  rm bcd-sys-2.3-x86_64.AppImage
+  rm bcd-sys-*
   exit
 }
 
