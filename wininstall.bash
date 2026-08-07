@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Licensed under GPLv3. See LICENSE for terms. (c) 2026 995qa.
+
 winpart=""
 efipart=""
 wimfile=""
@@ -32,17 +35,13 @@ applywim() {
 }
 
 efiapply() {
-#  mkdir -p $efimnt/EFI/Microsoft/Boot
-#  cp -r $winmnt/Windows/Boot/EFI/* $efimnt/EFI/Microsoft/Boot
-#  ^ It looks like BCD-SYS actually does this step while making the BCD
-
-# also it doesn't like running as root for some reason
   sudo -u "$SUDO_USER" ./bcd-sys-2.3-x86_64.AppImage -v "$winmnt"
   if (( $? != 0 )); then
     echo "wait whar"
     clean
     exit 5
   fi
+  clean
 }
 
 clean() {
@@ -85,7 +84,6 @@ if [ ! -f "$wimfile" ]; then
   help
   exit 1
 fi
-
 
 winmnt=$(findmnt -n -o TARGET $winpart)
 efimnt=$(findmnt -n -o TARGET $efipart)
