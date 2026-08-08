@@ -13,5 +13,13 @@ sudo ./wiminstall.bash -w [winpart] -e [efipart] -f [wimfile]
 -i specifies the index and is optional. when not specified, the script will show available indexes on the WIM to choose from.
 ```
 
+## Issues
+
+Due to wimapply not being able to apply NTFS attributes (hidden, read-only, etc.) some bugs could occur:
+
+- On all versions of Windows, desktop.ini will be visible and will show the file on notepad on logon.
+- On Windows 10, the OOBE wont work. you'll have to set up Windows manually via cmd & regedit.
+- On Windows 10, tray applets and the start menu won't work.
+
 ## Credits
 [BCD-SYS](https://github.com/jpz4085/BCD-SYS)
